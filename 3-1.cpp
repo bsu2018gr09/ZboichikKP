@@ -39,28 +39,24 @@ void giveMemory(char *&str) {
 bool findWord(char *str, char letter) {
     bool flag = false;
     char *pch = strtok(str, " ,.-;");
-    char *pch2 = pch;
+    char *pch2;
     pch2 = strtok(NULL, " ,.-;");
-    while (pch) {
-        for (int i(0); pch[i] != '\0' && pch2[i] != '\0'; i++) {
-            if (pch[i] == letter && pch2[i] == letter) {
+    while (pch2) {
+        for (int i(0); pch[i] != '\0' || pch2[i] != '\0'; i++) {
+            if (pch[i] == letter || pch2[i] == letter) {
                 flag = true;
-            } else if ((pch[i] != letter && pch2[i] == letter) && (pch[i] == letter && pch2[i] != letter)) { break; }
+                if ((pch[i] == letter && pch2[i] != letter) || (pch[i] != letter && pch2[i] == letter)) {
+                    flag = false;
+                    break;
+                }
+            }
         }
-        pch = pch2;
         if (flag) {
             cout << pch << '\n';
             flag = false;
         }
+        pch = pch2;
         pch2 = strtok(NULL, " ,.-;");
-    }
-}
-
-
-void printWord(char *str, int len) {
-    while (str[len] != ' ') {
-        cout << str[len];
-        len++;
     }
 }
 
