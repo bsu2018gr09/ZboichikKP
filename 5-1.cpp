@@ -1,5 +1,5 @@
 #include<iostream>
-#include<fstream>
+#include<fstream>//где условие задачи? Какой градиент ты делаешь???
 
 using namespace std;
 struct color {
