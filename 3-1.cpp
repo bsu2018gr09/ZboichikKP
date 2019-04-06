@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>//где условие????
 
 using namespace std;
 const int MAX = 255;
