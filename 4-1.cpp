@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>//хочу строки на кирилице вводить!!!
 #include "iomanip"
 
 using namespace std;
@@ -39,7 +39,7 @@ void words(char *str) {
     int cnt = 0;
     bool flag = false;
     char *pch = strtok(str, " ,.-;");
-    string *arr = new string[MAX];
+    string *arr = new string[MAX];// ух, ты!!!! А что такое string??? Галкин разрешил?????
     while (pch != NULL) {
         for (int i{0}; i < 12; i++) {
             if (pch[0] == vowels[i]) {
