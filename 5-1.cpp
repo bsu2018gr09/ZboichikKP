@@ -50,11 +50,11 @@ int main() {
     c.g = 16;
     c.b = 77;
 
-    float r2 = 254;
+    float r2 = 254;//ставлю 0 и все ломается
     float g2 = 46;
     float b2 = 99;
 
-    int step = 150;
+    int step = 150;//ставлю 30 и все ломается
 
   //  float w2 = w / 2.52;
 
