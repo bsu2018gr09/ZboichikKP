@@ -4,7 +4,7 @@
 using namespace std;
 
 int *memoryAllocation(int);
-
+ 
 void randomInitArray(int *, int);
 
 void printArray(int *, int);
