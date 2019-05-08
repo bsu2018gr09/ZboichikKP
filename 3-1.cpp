@@ -45,7 +45,7 @@ bool findWord(char *str, char letter) {
         for (int i(0); pch[i] != '\0' || pch2[i] != '\0'; i++) {
             if (pch[i] == letter || pch2[i] == letter) {
                 flag = true;
-                if ((pch[i] == letter && pch2[i] != letter) || (pch[i] != letter && pch2[i] == letter)) {
+                if ((pch[i] == letter && pch2[i] != letter) || (pch[i] != letter && pch2[i] == letter)) {// так не прокатит. Задание на использование функций из библиотеки, а не самопальных...
                     flag = false;
                     break;
                 }
