@@ -88,7 +88,7 @@ bool isSimpleColom(int **Arr, int j, int N) {
 void deleteColom(int **Arr, int j, int N, int M) {
     for (; j < M; j++) {
         for (int i = 0; i < N; i++) {
-            *(*(Arr + i) + j) = *(*(Arr + i) + j + 1);
+            *(*(Arr + i) + j) = *(*(Arr + i) + j + 1); //плохо. Удаляешь поэлементно!!!!
         }
     }
 };
