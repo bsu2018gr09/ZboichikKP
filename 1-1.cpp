@@ -41,7 +41,7 @@ int main() {
 
 void d(int *X, int *Y, int *D,int a, int b, int c, int N){
     for (int i(0); i < N; i++) {
-         *(D + i) = abs(*(X + i) + *(Y + i) + c) / sqrt(a * a + b * b);
+         *(D + i) = abs(*(X + i) + *(Y + i) + c) / sqrt(a * a + b * b);// нет оптимизации. Зачем всё время  sqrt(a * a + b * b)
     }
 }
 
