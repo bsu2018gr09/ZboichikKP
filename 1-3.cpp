@@ -35,7 +35,7 @@ int main() {
 void arrSort(int *A, int N){
     for(int i(0); i < N ; i++) {
         if (isSimple (*(A + i))) {
-            for (int j(0); j < N ; j++) {
+            for (int j(0); j < N ; j++) { 
                 if (isSimple(*(A + j)) && *(A + i) < *(A + j)) {
                     swap(*(A + i), *(A + j));
                 }
