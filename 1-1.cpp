@@ -18,7 +18,6 @@ void d(int *, int *, int *, int, int, int, int);
 int sortArr(int *, int);
 
 
-
 int main() {
     srand(time(0));
     int N;
@@ -30,29 +29,30 @@ int main() {
     int *A = memoryAllocation(N);
     int *B = memoryAllocation(N);
     int *D = memoryAllocation(N);
-    randomInitArray(A,B, N);
+    randomInitArray(A, B, N);
     printArray(A, N);
-    d(A,B,D,A1,B1 ,C ,N);
+    d(A, B, D, A1, B1, C, N);
     printArray(B, N);
     sortArr(D, N);
     printArray(D, N);
     deleteMemory(A, B);
 }
 
-void d(int *X, int *Y, int *D,int a, int b, int c, int N){
+void d(int *X, int *Y, int *D, int a, int b, int c, int N) {
+    double sqr = sqrt(a * a + b * b);
     for (int i(0); i < N; i++) {
-         *(D + i) = abs(*(X + i) + *(Y + i) + c) / sqrt(a * a + b * b);// нет оптимизации. Зачем всё время  sqrt(a * a + b * b)
+        D[i] = abs(X[i] + Y[i] + c) / sqr;
     }
 }
 
-int sortArr(int *D, int N){
-        for (int i = 0; i < N - 1; i++) {
-            for (int j = 0; j < N - i - 1; j++) {
-                if (*(D + j) > *(D + j + 1)) {
-                    swap(*(D + j), *(D + j + 1));
-                }
+int sortArr(int *D, int N) {
+    for (int i = 0; i < N - 1; i++) {
+        for (int j = 0; j < N - i - 1; j++) {
+            if (*(D + j) > *(D + j + 1)) {
+                swap(*(D + j), *(D + j + 1));
             }
         }
+    }
 };
 
 int *memoryAllocation(int N) {
