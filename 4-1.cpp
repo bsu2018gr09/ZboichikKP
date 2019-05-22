@@ -1,105 +1,98 @@
-#include <iostream>//хочу строки на кирилице вводить!!!
-#include "iomanip"
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <clocale>
+#include <cstring>
+#include <string.h>
+
+//В тексте выбрать все слова, начинающиеся с гласных букв, и расположить их в порядке возрастания
+// количества букв в слове.
 
 using namespace std;
-const int MAX = 255;
+const int MAX = 1000000;
+int slowa = 0;
 
-//bool findWord(char *m, char);
+void swapStr(char *a, char *b);
 
-void giveMemory(char *&);
+void printArr(char **arr);
 
-void deleteMemory(char *&str);
+void fullWords(char **arr);
 
-void printArr(string *arr, int);
+void sort(char **arr);
 
-void sort(string *, int);
+static char vowelsEn[] = "AaEeIiOoUuYy";
+static char vowelsRus[] = "А а Е е И и О о У у Ы ы Э э Я я ";
 
-void words(char *str);
-
-static char vowels[] = "AaEeIiOoUuYy";
 
 int main() {
-    int len = 0;
-    char *str = nullptr;
-    cout << "Enter string" << '\n';
-    giveMemory(str);
-    cin.getline(str, 255);
-    words(str);
-    deleteMemory(str);
-}
-
-void giveMemory(char *&str) {
-    str = new(nothrow) char[MAX];
-    if (!str) {
-        cout << "error" << "\n";
+    char **arr = new(nothrow) char *[MAX];
+    if (!arr) {
+        cout << "Can't create array";
+        exit;
     }
+    fullWords(arr);
+    sort(arr);
+    printArr(arr);
 }
 
-void words(char *str) {
-    int cnt = 0;
-    bool flag = false;
-    char *pch = strtok(str, " ,.-;");
-    string *arr = new string[MAX];// ух, ты!!!! А что такое string??? Галкин разрешил?????
-    while (pch != NULL) {
-        for (int i{0}; i < 12; i++) {
-            if (pch[0] == vowels[i]) {
-                flag = true;
-            }
-        }
-        if (flag) {
-            arr[cnt] = pch;
-            cnt++;
-            flag = false;
-        }
-        pch = strtok(NULL, " ,.-");
+
+//тут читаем файл, разбиваем на слова, и записываем их в массив, если они начинаются на гласную
+void fullWords(char **arr) {
+    char *buff = new char[MAX];
+    ifstream file1("/Users/kostyaz/dev/Barvenov/tom2.txt");
+    if (!file1) {
+        cout << "No file /Users/kostyaz/dev/Barvenov/tom2.txt. Can't create\n";
+        exit(1);
     }
-    sort(arr, cnt);
-    printArr(arr, cnt);
-}
-
-void sort(string *arr, int cnt) {
-    for (int i{0}; i < cnt; i++) {
-        for (int j = 0; j < cnt - i - 1; j++) {
-            if (arr[j].length() > arr[j + 1].length()) {
-                swap(arr[j], arr[j + 1]);
-            }
-        }
-    }
-}
-
-void printArr(string *arr, int cnt) {
-    for (int i{0}; i < cnt; i++) {
-        cout << arr[i] << " ";
-    }
-}
-
-void deleteMemory(char *&str) {
-    delete[] str;
-    str = nullptr;
-}
-
-/*bool findWord(char *str, char letter){
-    bool flag = false;
-    char *pch = strtok(str, " ,.-;");
-    char *pch2;
-    pch2 = strtok(NULL, " ,.-;");
-    while (pch2) {
-        for (int i(0); pch[i] != '\0' || pch2[i] != '\0'; i++) {
-            if (pch[i] == letter || pch2[i] == letter) {
-                flag = true;
-                if ((pch[i] == letter && pch2[i] != letter) || (pch[i] != letter && pch2[i] == letter)) {
-                    flag = false;
-                    break;
+    while (1) {
+        file1.getline(buff, MAX - 1);
+        if (file1.fail()) file1.clear();
+        if (file1.eof()) break;
+        char *pch = strtok(buff, " ,.-;\'\"?!-:”—");
+        while (pch != NULL) {
+            for (int i = 0; i < 12; i++) {
+                if (pch[0] == vowelsEn[i]) {
+                    arr[slowa] = new (nothrow) char[20];
+                    strcpy(arr[slowa], pch);
+                    slowa++;
                 }
             }
+            pch = strtok(NULL, " ,.-;\'\"”?!-:—");
         }
-        if (flag) {
-            cout << pch << "  " << pch2 << '\n';
-            flag = false;
-        }
-        pch = pch2;
-        pch2 = strtok(NULL, " ,.-;");
     }
+    file1.close();
 }
- */
+// тут обмен слов в массиве
+void swapStr(char *a, char *b) {
+    char *tmp = new(nothrow) char[15];
+    strcpy(tmp, b);
+    strcpy(b, a);
+    strcpy(a, tmp);
+}
 
+//сортировка пузырьком(
+void sort(char **arr) {
+    ifstream file1("/Users/kostyaz/dev/Barvenov/file2.txt");
+    if (!file1) {
+        cout << "No file d:\\date2.txt. Can't create\n";
+        exit(1);
+    }
+    for (int i = 0; i < slowa; i++) {
+        for (int j = 0; j < slowa - i - 1; j++) {
+            if (strlen(arr[j]) < strlen(arr[j+1])) {
+                swapStr(arr[j], arr[j+1]);
+            }
+        }
+    }
+
+}
+
+//вывод
+void printArr(char **arr) {
+    ofstream file1("/Users/kostyaz/dev/Barvenov/file2.txt");
+    for (int i = 0; i < slowa; i++) {
+        file1 << arr[i] << '\n';
+       // cout << arr[i] << '\n';
+    }
+    file1.close();
+}
