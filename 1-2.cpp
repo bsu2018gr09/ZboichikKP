@@ -1,31 +1,41 @@
+//Неотрицательные элементы (случайные числа) массива А(N), где N=100000 переставить 
+//в конец массива, сохраняя порядок следования.
+//Отрицательные элементы расположить в порядке убывания. Дополнительный массив не использовать.
+
+//написал свой код
+
 #include<iostream>
 #include<time.h>
 
 using namespace std;
 
 int *memoryAllocation(int);
- 
+
 void randomInitArray(int *, int);
 
 void printArray(int *, int);
 
 void deleteMemory(int *);
 
-void shiftPositive(int *, int);
+void shiftPositive(int *arr, int, int);
 
-void shiftArray(int *, int, int &);
+int countOfNeg(int *arr, int N);
 
-void shiftNegative(int *, int, int &);
+void sortNegative(int *arr, int left, int right);
 
 int main() {
+    int neg = 0;
     srand(time(0));
     int N;
     cin >> N;
     int *A = memoryAllocation(N);
     randomInitArray(A, N);
-    printArray(A, N);
-    shiftPositive(A, N);
-    printArray(A, N);
+   // printArray(A, N);
+    neg = countOfNeg(A, N);
+    cout << neg << '\n';
+    shiftPositive(A, N, neg);
+    sortNegative(A,0, neg);
+    //printArray(A, N);
     deleteMemory(A);
 }
 
@@ -43,6 +53,56 @@ void randomInitArray(int *A, int N) {
     }
 }
 
+int countOfNeg(int *arr, int N) {
+    int neg = 0;
+    for (int i(0); i < N; i++) {
+        if (arr[i] < 0) {
+            neg++;
+        }
+    }
+    return neg;
+}
+
+void shiftPositive(int *arr, int N, int neg) {
+    int cnt;
+    for (int i(0); i < neg;) {
+        if (arr[i] >= 0) {
+            cnt = arr[i];
+            for (int j = i; j < N - 1; j++) {
+                arr[j] = arr[j + 1];
+
+            }
+            //printArray(arr,N);
+            arr[N - 1] = cnt;
+        } else {
+            i++;
+        }
+    }
+}
+
+void sortNegative(int *arr, int left, int right) {
+    int i = left, j = right;
+    int tmp;
+    int pivot = arr[(left + right) / 2];
+    while (i <= j) {
+        while (arr[i] < pivot)
+            i++;
+        while (arr[j] > pivot)
+            j--;
+        if (i <= j) {
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+            i++;
+            j--;
+        }
+    };
+    if (left < j)
+        sortNegative(arr, left, j);
+    if (i < right)
+        sortNegative(arr, i, right);
+}
+
 void printArray(int *A, int N) {
     for (int i(0); i < N; ++i) {
         cout << *(A + i) << ";";
@@ -50,44 +110,6 @@ void printArray(int *A, int N) {
     }
     cout << "\n";
 
-}
-
-void shiftPositive(int *A, int N) {
-    int k = 0;
-    for (int i(0); i < N; ++i) {
-        if (*(A + i) >= 0) {
-            swap(*(A + i), *(A + k));
-            ++k;
-        }
-    }
-    shiftArray(A, N, k);
-    shiftNegative(A, N, k);
-}
-
-void shiftNegative(int *A, int N, int &k) {
-    int l = 1, j, i;
-    while (l) {
-        l = 0;
-        for (i = 0, j = 1; j < k; ++i, ++j) {
-            if (*(A + i) < *(A + j)) {
-                swap(*(A + i), *(A + j));
-                l = 1;
-            }
-        }
-    }
-}
-
-void shiftArray(int *A, int N, int &k) {
-    k = N - k;
-    for (int i(0), j = N - 1; i < N / 2; ++i, --j) {
-        swap(*(A + i), *(A + j));
-    }
-    for (int i(0), j = k - 1; i < k / 2; ++i, --j) {
-        swap(*(A + i), *(A + j));
-    }
-    for (int i(k), j = N - 1; i < (N - k) / 2 + k; ++i, --j) {
-        swap(*(A + i), *(A + j));
-    }
 }
 
 void deleteMemory(int *A) {
