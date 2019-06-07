@@ -21,7 +21,6 @@ void createFile(){
     ifstream file2(file);
     if(!file2){
         ofstream outfile(file);
-        outfile<<"123";
         outfile.close();
     }
     file2.close();
@@ -115,14 +114,14 @@ void editCar(Car *&arr, int size, int n) {
 }
 
 void delCar(Car *&arr, int &size, int n1, int n2) {
-    int x = n2 - n1;
+    int x = n2 - n1 + 1;
     //Car *newArr = giveMemory<Car>(size - x);
-    for (int i{0}; i < n2 - n1 + 1; ++i) {
-        if (n1 + x + i - 1 > size) { break; }
-        arr[n1 + i - 1] = arr[n1 + x + i];
+    for (int i{n1 - 1}; i < size-x; ++i) {
+        if (n1 + x + i - 2 > size) { break; }
+        arr[i] = arr[i+x];
+
     }
-    if (n1 < size)
-        size -= x;
+    size-=x;
 }
 
 int findOldCars(Car *arr, int n, Car *&rez, int year) {

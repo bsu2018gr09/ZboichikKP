@@ -39,11 +39,11 @@ int main() {
     Car *arrLocal = initArrayFromFile(cntLocal);
     localSize = cntLocal;
     while (1) {
-        cout << "\n1-Вывести записи\n2-Новая запись\n3-Редактировать запись\n4-5-Функции\n6-Выйти\n";
+        cout << "\n1-Вывести записи\n2-Новая запись\n3-Редактировать запись\n4-Удаление \n 5-Сортировка \n6-Выйти\n";
         cin >> n;
         switch (n) {
             case 1:
-                cout << "1-Все записи\n2-По значению; \n";
+                cout << "1-Все записи\n2-По значению \n";
                 cin >> x;
                 switch (x) {
                     case 1:
@@ -127,7 +127,7 @@ int main() {
                 arrFile = initArrayFromFile(cntLocal);
                 break;
             case 4:
-                /*int nbr1;
+                int nbr1;
                 int nbr2;
                 cout << "\nВведите номера записи, откуда хотите удалить \n";
                 cin >> nbr1;
@@ -137,7 +137,7 @@ int main() {
                 delCar(arrLocal, cntLocal, nbr1, nbr2);
                 writeToFile(arrLocal, cntLocal);
                 arrFile = initArrayFromFile(cntLocal);
-                break;*/
+                break;
             case 5:
                 int func;
                 cout << "\nВыберите функцию:\n";
