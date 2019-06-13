@@ -55,7 +55,7 @@ private:
         }
 
         void SetDay(int i) {
-            day = i;
+            day = i;//прямо вот без проверок и прочего? Почему бы тогда просто не сделать public все поля. Раз так запросто пишем туда
         }
 
         int GetDay() {
@@ -63,7 +63,7 @@ private:
         }
 
         void SetMonth(int i) {
-            month = i;
+            month = i;//прямо вот без проверок и прочего? Почему бы тогда просто не сделать public все поля. Раз так запросто пишем туда
 
         }
 
@@ -73,12 +73,11 @@ private:
         }
 
         void SetYear(int i) {
-            year = i;
+            year = i;//прямо вот без проверок и прочего? Почему бы тогда просто не сделать public все поля. Раз так запросто пишем туда
         }
 
         int GetYear() {
             return year;
-        }
 
         friend ostream &operator<<(ostream &os, Date const &t) {
             os << " Date: " << setw(2) << setfill('0') << t.day << "." << setw(2) << setfill('0') << t.month << "."
@@ -106,7 +105,7 @@ private:
     Date date;
 
 public:
-    Car() : id{0}, stateNumber{0}, brand{giveMemory<char>(5)}, color{0} {
+    Car() : id{0}, stateNumber{0}, brand{giveMemory<char>(5)}, color{0} {//потенциально ОЧЕНЬ опасное место!!! Не в том порядке инициализируются!!!!!
         strcpy(brand, "null");
     }
 
@@ -114,12 +113,12 @@ public:
                                                                                  stateNumber{_stateNum},
                                                                                  brand{giveMemory<char>(
                                                                                          strlen(_br) + 1)},
-                                                                                 color{_color} {
+                                                                                 color{_color} {//потенциально ОЧЕНЬ опасное место!!! Не в том порядке инициализируются!!!!!
         strcpy(brand, _br);
     }
 
     Car(Car const &tmp) : id{tmp.id}, stateNumber{tmp.stateNumber},
-                          brand{giveMemory<char>(strlen(tmp.brand) + 1)}, color{tmp.color} {}
+                          brand{giveMemory<char>(strlen(tmp.brand) + 1)}, color{tmp.color} {}//и вот, не скопируем бренд? Только память выделим?
 
     ~Car() {
         freeMemory<char>(brand);
