@@ -14,12 +14,11 @@
 
 
 using namespace std;
-
 char file[] = "/Users/kostyaz/123.txt";
 
-void createFile(){
+void createFile() {
     ifstream file2(file);
-    if(!file2){
+    if (!file2) {
         ofstream outfile(file);
         outfile.close();
     }
@@ -54,11 +53,9 @@ Car *initArrayFromFile(int &count) {
         fff2 >> id;
         arr[i].SetId(id);
         fff2 >> day;
-        arr[i].SetDay(day);
         fff2 >> month;
-        arr[i].SetMonth(month);
         fff2 >> year;
-        arr[i].SetYear(year);
+        arr[i].SetDate(day,month,year);
         fff2 >> color;
         arr[i].SetColor(color);
         fff2 >> stateNumber;
@@ -116,12 +113,12 @@ void editCar(Car *&arr, int size, int n) {
 void delCar(Car *&arr, int &size, int n1, int n2) {
     int x = n2 - n1 + 1;
     //Car *newArr = giveMemory<Car>(size - x);
-    for (int i{n1 - 1}; i < size-x; ++i) {
+    for (int i{n1 - 1}; i < size - x; ++i) {
         if (n1 + x + i - 2 > size) { break; }
-        arr[i] = arr[i+x];
+        arr[i] = arr[i + x];
 
     }
-    size-=x;
+    size -= x;
 }
 
 int findOldCars(Car *arr, int n, Car *&rez, int year) {
@@ -198,9 +195,7 @@ void initByRandom(Car *&arr, int n, int cnt) {
     char a[10][10] = {"Tesla", "BMW", "Nissan", "Renault", "Geely", "Ford", "Opel", "KIA", "Mazda", "Volvo"};
     for (int i{n}; i < n + cnt; ++i) {
         arr[i].SetId(i);
-        arr[i].SetDay(rand() % 30 + 1);
-        arr[i].SetMonth(rand() % 12 + 1);
-        arr[i].SetYear(rand() % 19 + 2000);
+        arr[i].SetDate(rand() % 30 + 1, rand() % 12 + 1,rand() % 19 + 2000);
         arr[i].SetStateNumber(rand() % 89999 + 10000);
         arr[i].SetColor(rand() % 10);
         arr[i].SetBrand(a[rand() % 10]);
@@ -220,7 +215,7 @@ int findByParam(Car *arr, int n, Car *&rez, char *state) {
         if (strstr(arr[i].GetBrand(), state) != 0) {
             rez[cnt] = arr[i];
             ++cnt;
-            flag = true;
+            continue;
         }
         if (sizeof(state) != 4 && atoi(state) == 0) {
             continue;
@@ -234,17 +229,14 @@ int findByParam(Car *arr, int n, Car *&rez, char *state) {
         nums[4] = arr[i].GetColor();
         unsigned long mod = 10;
         while ((cnt2 % mod) != cnt2) mod *= 10;
-        if (!flag) {
             for (int p(0); p < 5; ++p) {
                 for (; (nums[p] % mod) != cnt2 && nums[p] > mod; nums[p] /= 10);
                 if ((nums[p] % mod) == cnt2) {
                     rez[cnt] = arr[i];
                     ++cnt;
+                    break;
                 }
             }
-        }
     }
     return cnt;
 }
-
-

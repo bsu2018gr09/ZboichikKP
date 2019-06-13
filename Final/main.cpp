@@ -18,17 +18,28 @@ f) поиска машины по любой комбинации признак
 using namespace std;
 
 Car *initArrayFromFile(int &count);
+
 void writeToFile(Car *arr, int n);
+
 void printArray(Car *arr, int n);
+
 void expandArraySize(Car *&arr, int &size, int add);
+
 void editCar(Car *&arr, int size, int n);
+
 void delCar(Car *&arr, int &size, int n1, int n2);
+
 int findOldCars(Car *arr, int n, Car *&rez, int year);
+
 int findByRegion(Car *arr, int n, Car *&rez, int state);
+
 void initByRandom(Car *&arr, int n, int cnt);
+
 int findByParam(Car *arr, int n, Car *&rez, char *state);
-int getFileSize();
+
 void createFile();
+
+int getFileSize();
 
 int main() {
     setlocale(LC_ALL, "Russian");
@@ -39,7 +50,7 @@ int main() {
     Car *arrLocal = initArrayFromFile(cntLocal);
     localSize = cntLocal;
     while (1) {
-        cout << "\n1-Вывести записи\n2-Новая запись\n3-Редактировать запись\n4-Удаление \n 5-Сортировка \n6-Выйти\n";
+        cout << "\n1-Вывести записи\n2-Новая запись\n3-Редактировать запись\n4-Удаление \n5-Сортировка \n6-Выйти\n";
         cin >> n;
         switch (n) {
             case 1:
@@ -55,12 +66,20 @@ int main() {
                         char *tmp = giveMemory<char>(30);
                         cout << "Введите значение, по какому будет поиск\n";
                         cin >> tmp;
-                        int localSize2;
-                        Car *rez = giveMemory<Car>(cntLocal);
-                        localSize2 = findByParam(arrLocal, localSize, rez, tmp);
-                        //cout << localSize2 << '\n';
-                        printArray(rez, localSize2);
-                        freeMemory(rez);
+                        int localSize2 = 0;
+                        Car *rez = giveMemory<Car>(cntFile);
+                        arrFile = initArrayFromFile(cntFile);
+                        arrLocal = initArrayFromFile(cntLocal);
+                        localSize2 = findByParam(arrFile, localSize, rez, tmp);
+                        if (localSize2 != 0) {
+                            cout << localSize2 << '\n';
+                            printArray(rez, localSize2);
+                            freeMemory(arrLocal);
+                            arrFile = initArrayFromFile(cntFile);
+                            arrLocal = initArrayFromFile(cntLocal);
+                            freeMemory(rez);
+                            freeMemory(tmp);
+                        }
                         break;
                 }
                 break;
@@ -76,16 +95,15 @@ int main() {
                     }
                     for (int i{cntLocal}; i < cntLocal + cnt; ++i) {
                         arrLocal[i].SetId(getFileSize() / 7);
-                        int ent;
+                        int ent, ent2, ent3;
+
                         cout << "Введите день\n";
                         cin >> ent;
-                        arrLocal[i].SetDay(ent);
                         cout << "Введите месяц\n";
-                        cin >> ent;
-                        arrLocal[i].SetMonth(ent);
+                        cin >> ent2;
                         cout << "Введите год\n";
-                        cin >> ent;
-                        arrLocal[i].SetYear(ent);
+                        cin >> ent3;
+                        arrLocal[i].SetDate(ent, ent2, ent3);
                         cout << "Введите цвет\n";
                         cin >> ent;
                         arrLocal[i].SetColor(ent);
@@ -136,6 +154,8 @@ int main() {
                 cout << nbr1 << "-" << nbr2 << '\n';
                 delCar(arrLocal, cntLocal, nbr1, nbr2);
                 writeToFile(arrLocal, cntLocal);
+                printArray(arrLocal, cntLocal);
+                arrLocal = initArrayFromFile(cntLocal);
                 arrFile = initArrayFromFile(cntLocal);
                 break;
             case 5:
@@ -151,10 +171,7 @@ int main() {
                     Car *rez = giveMemory<Car>(cntLocal);
                     int oldCars = findOldCars(arrLocal, cntLocal, rez, year);
                     printArray(rez, oldCars);
-                    cin >> year;
-                    writeToFile(rez, oldCars);
-                    arrFile = initArrayFromFile(cntFile);
-                    arrLocal = initArrayFromFile(cntLocal);
+                    freeMemory(rez);
                 } else if (func == 2) {
                     int state;
                     cout << "Введите регион: \n";
@@ -171,6 +188,5 @@ int main() {
                 exit(0);
         }
     }
-
 }
 

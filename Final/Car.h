@@ -4,16 +4,18 @@
 
 #ifndef FINAL7_1_CAR_H
 #define FINAL7_1_CAR_H
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<ctime>
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <ctime>
 #include <fstream>
 #include <cstring>
 #include <iomanip>
+#include <cstdlib>
+#include <stdlib.h>
 using namespace std;
-
-
 template<class T>
 T *giveMemory(int n) {
     T *arr = new(nothrow) T[n];
@@ -31,18 +33,80 @@ void freeMemory(T *&arr) {
 }
 
 
+using namespace std;
+typedef int type;
+
 class Car {
+
 private:
-    int day;
-    int month;
-    int year;
+    class Date {
+    private:
+        int day;
+        int month;
+        int year;
+
+    public:
+        Date() : day{0}, month{0}, year{0} {}
+
+        Date(int _day, int _month, int _year) : day{_day}, month(_month), year{_year} {}
+
+        ~Date() {
+
+        }
+
+        void SetDay(int i) {
+            day = i;
+        }
+
+        int GetDay() {
+            return day;
+        }
+
+        void SetMonth(int i) {
+            month = i;
+
+        }
+
+        int GetMonth() {
+            return month;
+
+        }
+
+        void SetYear(int i) {
+            year = i;
+        }
+
+        int GetYear() {
+            return year;
+        }
+
+        friend ostream &operator<<(ostream &os, Date const &t) {
+            os << " Date: " << setw(2) << setfill('0') << t.day << "." << setw(2) << setfill('0') << t.month << "."
+               << setw(4) << setfill('0') << t.year << " ";
+            return os;
+        }
+
+        friend istream &operator>>(istream &is, Date &t) {
+            cout << "Day: ";
+            is >> t.day;
+            cout << "Month: ";
+            is >> t.month;
+            cout << "Year: ";
+            is >> t.year;
+            return is;
+        }
+
+
+    };
+
     char *brand;
     int color;
     int stateNumber;
     int id;
+    Date date;
 
 public:
-    Car() : id{0}, stateNumber{0}, brand{giveMemory<char>(5)}, color{0}, day{0}, month{0}, year{0} {
+    Car() : id{0}, stateNumber{0}, brand{giveMemory<char>(5)}, color{0} {
         strcpy(brand, "null");
     }
 
@@ -50,29 +114,21 @@ public:
                                                                                  stateNumber{_stateNum},
                                                                                  brand{giveMemory<char>(
                                                                                          strlen(_br) + 1)},
-                                                                                 color{_color}, day{_d},
-                                                                                 month{_m}, year{_y} {
+                                                                                 color{_color} {
         strcpy(brand, _br);
     }
 
     Car(Car const &tmp) : id{tmp.id}, stateNumber{tmp.stateNumber},
-                          brand{giveMemory<char>(strlen(tmp.brand) + 1)}, color{tmp.color},
-                          day{tmp.year}, month{tmp.month}, year{tmp.year} {}
+                          brand{giveMemory<char>(strlen(tmp.brand) + 1)}, color{tmp.color} {}
 
     ~Car() {
         freeMemory<char>(brand);
     }
 
-    void SetDay(int i) {
-        day = i;
-    }
-
-    void SetMonth(int i) {
-        month = i;
-    }
-
-    void SetYear(int i) {
-        year = i;
+    void SetDate(int _day, int _month, int _year) {
+        date.SetDay(_day);
+        date.SetMonth(_month);
+        date.SetYear(_year);
     }
 
     void SetColor(int i) {
@@ -96,17 +152,16 @@ public:
     }
 
     int GetDay() {
-        return day;
+        return date.GetDay();
     }
 
     int GetMonth() {
-        return month;
+        return date.GetMonth();
     }
 
     int GetYear() {
-        return year;
+        return date.GetYear();
     }
-
 
     int GetId() {
         return id;
@@ -122,30 +177,26 @@ public:
 
 
     friend ostream &operator<<(ostream &os, Car const &t) {
-        os << "Id: " << t.id << " Day: " << setw(2) << setfill('0') << t.day << "." << setw(2) << setfill('0')
-           << t.month << "." << setw(4) << setfill('0') << t.year << " Color: " << t.color << " state: "
-           << t.stateNumber << " brand: " << t.brand << "\n";
+        os <</* "Id: " << t.id <<*/ t.date << " Color: " << t.color << " State: "
+           << t.stateNumber << " Brand: " << t.brand << "\n";
         return os;
     }
 
     friend istream &operator>>(istream &is, Car &t) {
-        cout << "Day: ";
-        is >> t.day;
-        cout << "Month: ";
-        is >> t.month;
-        cout << "Year: ";
-        is >> t.year;
-        cout << "color: ";
+   //     cout << "Id: ";
+     //   is >> t.id;
+        cout << "Date: ";
+        is >> t.date;
+        cout << "Color: ";
         is >> t.color;
         cout << "State Number: ";
         is >> t.stateNumber;
-        cout << "brand: ";
+        cout << "Brand: ";
         is >> t.brand;
         cout << "\n";
         return is;
     }
 
 };
-
 
 #endif //FINAL7_1_CAR_H
