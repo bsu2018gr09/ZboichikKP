@@ -43,7 +43,7 @@ int getFileSize() {
 
 Car *initArrayFromFile(int &count) {
     int cnt = getFileSize();
-    cnt /= 7;
+    cnt /= 7; // фигасе!!!! Как это так?????? Чтобы найти кол-во строк надо прочитать файл до конца 
     count = cnt;
     Car *arr = giveMemory<Car>(cnt);
     ifstream fff2(file);
